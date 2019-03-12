@@ -3,6 +3,9 @@
 #pragma once
 
 #include "Tank.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
+#include "DrawDebugHelpers.h"
+
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
@@ -18,5 +21,19 @@ class TANKBATTLECODE_API ATankPlayerController : public APlayerController
 
 		ATank* GetControlledTank() const;
 		virtual void BeginPlay() override;
-	
+		virtual void Tick(float DeltaTime) override;
+		void AimTowardsCrosshair();
+		bool GetSightRayHitLocation(FVector& HitLocation) ;
+
+		void GetVectorHitLocation(FVector &UnitVectorHitLocation);
+
+
+		UPROPERTY(EditAnywhere)
+		float CrossHairXLocation = 0.5;
+		
+		UPROPERTY(EditAnywhere)
+		float CrossHairYLocation = 0.3333;
+
+		UPROPERTY(EditAnywhere)
+		float LineTraceRange = 10000000.0f;
 };
