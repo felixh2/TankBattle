@@ -23,9 +23,9 @@ class TANKBATTLECODE_API ATankPlayerController : public APlayerController
 		virtual void BeginPlay() override;
 		virtual void Tick(float DeltaTime) override;
 		void AimTowardsCrosshair();
-		bool GetSightRayHitLocation(FVector& HitLocation) ;
-
-		void GetVectorHitLocation(FVector &UnitVectorHitLocation);
+		
+		FVector DeprojectCrossHairToWorld() ;
+		void CalculateHitLocation(FVector &UnitVectorHitLocation);
 
 
 		UPROPERTY(EditAnywhere)
@@ -36,4 +36,6 @@ class TANKBATTLECODE_API ATankPlayerController : public APlayerController
 
 		UPROPERTY(EditAnywhere)
 		float LineTraceRange = 10000000.0f;
+
+		FHitResult  HitLocation;
 };

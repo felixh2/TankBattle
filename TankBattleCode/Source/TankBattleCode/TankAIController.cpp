@@ -3,6 +3,7 @@
 #include "TankAIController.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
+#pragma optimize("", off)
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -16,7 +17,7 @@ void ATankAIController::BeginPlay()
 	}
 
 
-	PlayerTank = GetPlayerTank();
+	//PlayerTank = GetPlayerTank();
 	if (PlayerTank) {
 		
 		FVector TankPosition = PlayerTank->GetTransform().GetLocation();
@@ -25,12 +26,37 @@ void ATankAIController::BeginPlay()
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("AI Tank didn't get player controller tank"));
 	}
-	FVector TankPosition = PlayerTank->GetTransform().GetLocation();
+	//FVector TankPosition = PlayerTank->GetTransform().GetLocation();
 }
 
-ATank * ATankAIController::GetControlledTank() const
+void ATankAIController::Tick(float DeltaTime)
 {
-	return Cast<ATank>(GetPawn());
+	Super::Tick(DeltaTime);
+	FVector playerTankLocation = AimTowardsPlayerTank();
+	GetControlledTank()->AimAt(GetControlledTank()->GetName(), playerTankLocation);
+
+}
+
+FVector ATankAIController::AimTowardsPlayerTank()
+{
+
+	ATank* PlayerTank = GetPlayerTank();
+	FVector playerTankLocation = PlayerTank->GetActorLocation();
+	FVector Start = GetPawn()->GetTransform().GetLocation();
+
+
+	/*DrawDebugLine(
+		GetWorld(),
+		Start,
+		playerTankLocation,
+		FColor(0, 0, 255),
+		false,
+		0.f,
+		0.f,
+		10.f
+	);*/
+
+	return playerTankLocation;
 }
 
 ATank * ATankAIController::GetPlayerTank() const
@@ -39,5 +65,15 @@ ATank * ATankAIController::GetPlayerTank() const
 
 	return Player_Tank;
 }
+
+ATank * ATankAIController::GetControlledTank() const
+{
+	return Cast<ATank>(GetPawn());
+}
+
+
+#pragma optimize("", on)
+
+
 
 

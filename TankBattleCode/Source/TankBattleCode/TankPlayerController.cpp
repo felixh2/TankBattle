@@ -24,15 +24,17 @@ void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	AimTowardsCrosshair();
+	
 }
 
 void ATankPlayerController::AimTowardsCrosshair()
-{
-	FVector OutHitLocation;
-	GetSightRayHitLocation(OutHitLocation);
+{	
+	FVector UnitVectorHitLocation  = DeprojectCrossHairToWorld();
+	CalculateHitLocation(UnitVectorHitLocation);
+	GetControlledTank()->AimAt(GetControlledTank()->GetName(), HitLocation.Location);	// Physical aiming 
 }
 
-bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) 
+FVector ATankPlayerController::DeprojectCrossHairToWorld()
 {
 	int32 OutViewPortSizeX, OutViewPortSizeY;
 	GetViewportSize(OutViewPortSizeX, OutViewPortSizeY);
@@ -42,16 +44,17 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation)
 	FVector UnitVectorHitLocation;
 	DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, UnitVectorHitLocation);
 
+	return UnitVectorHitLocation;
 
-	GetVectorHitLocation(UnitVectorHitLocation);
+	
 
 	//UE_LOG(LogTemp, Warning, TEXT("Look Location : %s"), *UnitVectorHitLocation.ToString())
-	return false;
+	
 }
 
-void ATankPlayerController::GetVectorHitLocation(FVector &UnitVectorHitLocation)
+void ATankPlayerController::CalculateHitLocation(FVector &UnitVectorHitLocation)
 {
-	FHitResult  OutHit;
+	
 	FVector  Start = PlayerCameraManager->GetCameraLocation();
 	FVector  End =  UnitVectorHitLocation *LineTraceRange;
 	FCollisionQueryParams  CollisionResponseParams;
@@ -68,21 +71,16 @@ void ATankPlayerController::GetVectorHitLocation(FVector &UnitVectorHitLocation)
 	);
 
 
-	//ECollisionChannel TraceChannel = new ECollisionChannel()
-//	FCollisionQueryParams  Params;
-//	FCollisionResponseParams  ResponseParam;
-
 	GetWorld()->LineTraceSingleByChannel(
-		OutHit,
+		HitLocation,
 		Start,
 		End,
 		ECollisionChannel::ECC_Visibility		
-		//CollisionResponseParams
 	);
 		
-	AActor* ActorHit = OutHit.GetActor();
+	AActor* ActorHit = HitLocation.GetActor();
 	if (ActorHit) {
-		UE_LOG(LogTemp, Warning, TEXT("Target is :%s "), *(ActorHit->GetName()));
-		UE_LOG(LogTemp, Warning, TEXT("Location is :%s "), *OutHit.Location.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("Target is :%s "), *(ActorHit->GetName()));
+		//UE_LOG(LogTemp, Warning, TEXT("Location is :%s "), *HitLocation.Location.ToString());
 	}
 }

@@ -9,6 +9,8 @@ ATank::ATank()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Creating Aiming Component in BluePrints
+	AimingComponent = CreateDefaultSubobject<UAimingComponent>(FName("Aiming Component"));
 }
 
 // Called when the game starts or when spawned
@@ -18,11 +20,17 @@ void ATank::BeginPlay()
 	
 }
 
+void ATank::SetBarrelReference(UStaticMeshComponent* BarrelRef)
+{
+	AimingComponent->SetBarrelReference(BarrelRef);
+}
+
+
 // Called every frame
 void ATank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input
@@ -32,3 +40,21 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ATank::AimAt(FString WhoIsAiming, FVector &HitLocation)
+{
+	
+	AimingComponent->AimAt(WhoIsAiming, HitLocation);
+
+}
+
+
+
+//void ATank::RotateBarrel(FVector Target)
+//{
+//
+//}
+//
+//void ATank::RotateTurret(FVector Target)
+//{
+//
+//}
