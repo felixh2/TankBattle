@@ -2,6 +2,7 @@
 
 #include "Tank.h"
 #include "TankBarrel.h"
+#include "AimingComponent.h"
 
 // Sets default values
 ATank::ATank()
@@ -23,6 +24,11 @@ void ATank::BeginPlay()
 void ATank::SetBarrelReference(UTankBarrel* BarrelRef)
 {
 	AimingComponent->SetBarrelReference(BarrelRef);
+}
+
+void ATank::SetTurrentReference(UTankTurrent * TurretReference)
+{
+	AimingComponent->SetTurrentReference(TurretReference);
 }
 
 

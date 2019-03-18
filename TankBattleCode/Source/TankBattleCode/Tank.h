@@ -1,11 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "AimingComponent.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
+
+class UTankTurrent;
+class UTankBarrel;
+class UAimingComponent;
 
 UCLASS()
 class TANKBATTLECODE_API ATank : public APawn
@@ -26,9 +29,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelRef);
 
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurrentReference(UTankTurrent* TurretReference);
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 100000.f;
+	float LaunchSpeed = 10000.f;
 
 protected:
 
@@ -39,7 +44,7 @@ protected:
 private:
 
 	UTankBarrel* Barrel = nullptr;
-
+	UTankTurrent* Turrent = nullptr;
 
 	
 	

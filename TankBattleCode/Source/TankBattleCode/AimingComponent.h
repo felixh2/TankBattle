@@ -12,6 +12,7 @@
 #include "AimingComponent.generated.h"
 
 class UTankBarrel;
+class UTankTurrent;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TANKBATTLECODE_API UAimingComponent : public UActorComponent
@@ -24,6 +25,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void AimAt(FString WhoIsAiming, FVector &HitLocation, float LaunchSpeed);
 	void SetBarrelReference(UTankBarrel* BarrelRef);
+	void SetTurrentReference(UTankTurrent* TurrentRef);
 
 protected:
 	// Called when the game starts
@@ -32,6 +34,7 @@ protected:
 private:	
 	
 	UTankBarrel * Barrel = nullptr;
+	UTankTurrent* Turrent = nullptr;
 
 		
 	

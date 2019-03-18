@@ -2,6 +2,8 @@
 
 #include "AimingComponent.h"
 #include "TankBarrel.h"
+#include "TankTurrent.h"
+
 
 // Sets default values for this component's properties
 UAimingComponent::UAimingComponent()
@@ -17,6 +19,11 @@ void UAimingComponent::SetBarrelReference(UTankBarrel* BarrelRef)
 {
 	Barrel = BarrelRef;
 	
+}
+
+void UAimingComponent::SetTurrentReference(UTankTurrent * TurrentRef)
+{
+	Turrent = TurrentRef;
 }
 
 // Called when the game starts
@@ -92,8 +99,8 @@ void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation, float La
 			auto DeltaRotator = AimAsRotator - BarrelRotator;
 			
 
-			Barrel->Elevate(5);
-
+			Barrel->Elevate(DeltaRotator.Pitch);
+			Turrent->RotateTurrent(DeltaRotator.Yaw);
 		}
 		else {
 			UE_LOG(LogTemp, Warning, TEXT("Could not find solution"));
