@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "AimingComponent.h"
-
+#include "TankBarrel.h"
 
 // Sets default values for this component's properties
 UAimingComponent::UAimingComponent()
@@ -13,7 +13,7 @@ UAimingComponent::UAimingComponent()
 	// ...
 }
 
-void UAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelRef)
+void UAimingComponent::SetBarrelReference(UTankBarrel* BarrelRef)
 {
 	Barrel = BarrelRef;
 	
@@ -39,15 +39,17 @@ void UAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
-void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation)
+void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation, float LaunchSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s is Aiming to Location : %s"), *WhoIsAiming, *HitLocation.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("%s is Aiming to Location : %s"), *WhoIsAiming, *HitLocation.ToString());
 	if (Barrel) {
 
 		FVector BarrelPosition = Barrel->GetComponentTransform().GetLocation();
+		FVector BarrelSocketPosition = Barrel->GetSocketLocation(FName("Projectile"));
+		
 		DrawDebugLine(
 			GetWorld(),
-			BarrelPosition,
+			BarrelSocketPosition,
 			HitLocation,
 			FColor(0, 0, 255),
 			false,
@@ -55,6 +57,54 @@ void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation)
 			0.f,
 			12.f
 		);
+
+		FVector LaunchVelocity(0);
+		//FVector TossVelocity = BarrelPosition * LaunchSpeed;
+		FCollisionResponseParams  ResponseParam;
+		TArray<AActor*> ActorsToIgnore;
+		
+		if (UGameplayStatics::SuggestProjectileVelocity
+			(
+				this,
+				LaunchVelocity,
+				BarrelSocketPosition,
+				HitLocation,
+				LaunchSpeed,
+				false,
+				0,
+				0,
+				ESuggestProjVelocityTraceOption::DoNotTrace,
+				ResponseParam,
+				ActorsToIgnore,
+				true)
+			)
+		{
+			FVector AimDirection = LaunchVelocity.GetSafeNormal();
+			//UE_LOG(LogTemp, Warning, TEXT("%s Aiming Direction is : %s"), *WhoIsAiming, *AimDirection.ToString());
+
+			
+		/*	float theta = AimDirection.DotProduct(AimDirection, BarrelSocketPosition.GetSafeNormal());
+			FRotator BarrelRotator;
+			BarrelRotator.Pitch = theta;*/
+		
+			auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+			auto AimAsRotator = AimDirection.Rotation();
+			auto DeltaRotator = AimAsRotator - BarrelRotator;
+			
+
+			Barrel->Elevate(5);
+
+		}
+		else {
+			UE_LOG(LogTemp, Warning, TEXT("Could not find solution"));
+		}
+
+		
+
 	}
+
+	
+
+
 }
 
