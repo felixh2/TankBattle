@@ -9,6 +9,7 @@
 class UTankTurrent;
 class UTankBarrel;
 class UAimingComponent;
+class AProjectile;
 
 UCLASS()
 class TANKBATTLECODE_API ATank : public APawn
@@ -38,6 +39,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void Fire();
 
+	UPROPERTY(EditAnywhere, Category = Firing)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
 protected:
 
 	virtual void BeginPlay() override;
@@ -48,7 +52,7 @@ private:
 
 	UTankBarrel* Barrel = nullptr;
 	UTankTurrent* Turrent = nullptr;
-
+	
 	
 	
 };
