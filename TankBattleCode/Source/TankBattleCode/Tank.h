@@ -35,6 +35,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float LaunchSpeed = 10000.f;
 
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void Fire();
+
 protected:
 
 	virtual void BeginPlay() override;

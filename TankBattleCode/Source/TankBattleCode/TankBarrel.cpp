@@ -21,7 +21,7 @@ void UTankBarrel::Elevate(float RelativeSpeed)
 		AddRelativeRotation(FRotator(ElevationChange, 0, 0));
 		*/
 	
-	UE_LOG(LogTemp, Warning, TEXT("Elevating %f degrees"), RelativeSpeed);
+	//UE_LOG(LogTemp, Warning, TEXT("Elevating %f degrees"), RelativeSpeed);
 
 }
 #pragma optimize("", on)

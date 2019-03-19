@@ -14,6 +14,11 @@ ATank::ATank()
 	AimingComponent = CreateDefaultSubobject<UAimingComponent>(FName("Aiming Component"));
 }
 
+void ATank::Fire()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Fire !"));
+}
+
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
