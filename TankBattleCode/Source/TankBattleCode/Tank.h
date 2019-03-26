@@ -10,6 +10,7 @@ class UTankTurrent;
 class UTankBarrel;
 class UAimingComponent;
 class AProjectile;
+class UTankMovementComponent;
 
 UCLASS()
 class TANKBATTLECODE_API ATank : public APawn
@@ -42,17 +43,23 @@ public:
 	UPROPERTY(EditAnywhere, Category = Firing)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
-protected:
+	UPROPERTY(EditDefaultsOnly, Category = Firing) // EditDefaultsOnly - all tanks will have the same values, can be changed only in blueprint 
+	float ReloadTime = 2.f;
 
+protected:
+	
 	virtual void BeginPlay() override;
 
 	UAimingComponent* AimingComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly)                                     // Enables to expose this variable in Blueprint 
+	UTankMovementComponent* MovementComponent = nullptr;
 
 private:
 
 	UTankBarrel* Barrel = nullptr;
 	UTankTurrent* Turrent = nullptr;
-	
+	double LastFireTime = 0;
 	
 	
 };

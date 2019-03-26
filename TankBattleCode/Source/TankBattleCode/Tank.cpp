@@ -4,6 +4,7 @@
 #include "TankBarrel.h"
 #include "AimingComponent.h"
 #include "Projectile.h"
+#include "TankMovementComponent.h"
 
 // Sets default values
 ATank::ATank()
@@ -12,7 +13,10 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 
 	// Creating Aiming Component in BluePrints
+	
+
 	AimingComponent = CreateDefaultSubobject<UAimingComponent>(FName("Aiming Component"));
+	//MovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 }
 
 
@@ -54,6 +58,16 @@ void ATank::AimAt(FString WhoIsAiming, FVector &HitLocation)
 
 void ATank::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Fire !"));
-	GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
+	bool ReadyToFire = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
+	if (ReadyToFire) {
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Projectile")),
+			Barrel->GetSocketRotation(FName("Projectile"))
+			);
+
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+	}
+	
 }

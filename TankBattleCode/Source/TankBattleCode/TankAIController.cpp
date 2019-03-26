@@ -34,6 +34,7 @@ void ATankAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	FVector playerTankLocation = AimTowardsPlayerTank();
 	GetControlledTank()->AimAt(GetControlledTank()->GetName(), playerTankLocation);
+	GetControlledTank()->Fire();
 
 }
 
