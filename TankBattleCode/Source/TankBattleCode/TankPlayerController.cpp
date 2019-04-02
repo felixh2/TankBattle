@@ -59,7 +59,7 @@ void ATankPlayerController::CalculateHitLocation(FVector &UnitVectorHitLocation)
 	FVector  End =  UnitVectorHitLocation *LineTraceRange;
 	FCollisionQueryParams  CollisionResponseParams;
 	
-	DrawDebugLine(
+	/*DrawDebugLine(
 		GetWorld(),
 		Start,
 		End,
@@ -68,7 +68,7 @@ void ATankPlayerController::CalculateHitLocation(FVector &UnitVectorHitLocation)
 		0.f,
 		0.f,
 		12.f
-	);
+	);*/
 
 
 	GetWorld()->LineTraceSingleByChannel(

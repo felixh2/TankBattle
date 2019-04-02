@@ -31,4 +31,5 @@ class TANKBATTLECODE_API ATankAIController : public AAIController
 
 private:
 	ATank * PlayerTank = nullptr;
+	float AcceptenceRadius = 3000;
 };

@@ -9,7 +9,7 @@ void UTankTrack::SetThrottle(float Throttle)
 
 	auto ForceToApply = GetForwardVector() * Throttle * MaxforceOnTrack;
 	auto ForceLocation = GetComponentLocation();
-	UE_LOG(LogTemp, Warning, TEXT("%s with force %f"), *Name, MaxforceOnTrack);
+	//UE_LOG(LogTemp, Warning, TEXT("%s with force %f"), *Name, MaxforceOnTrack);
 	auto RootTank = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 	RootTank->AddForceAtLocation(ForceToApply, ForceLocation);
 }

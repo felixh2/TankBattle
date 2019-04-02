@@ -23,7 +23,7 @@ void AProjectile::BeginPlay()
 void AProjectile::LaunchProjectile(float Speed)
 {
 	float Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("%f Fire with speed %f"), Time, Speed);
+	//UE_LOG(LogTemp, Warning, TEXT("%f Fire with speed %f"), Time, Speed);
 
 	TankProjectileMovementComponent->SetVelocityInLocalSpace(FVector::ForwardVector * Speed);
 	TankProjectileMovementComponent->Activate();

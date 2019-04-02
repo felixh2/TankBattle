@@ -53,7 +53,7 @@ void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation, float La
 
 		FVector BarrelPosition = Barrel->GetComponentTransform().GetLocation();
 		FVector BarrelSocketPosition = Barrel->GetSocketLocation(FName("Projectile"));
-		
+		/*
 		DrawDebugLine(
 			GetWorld(),
 			BarrelSocketPosition,
@@ -64,7 +64,7 @@ void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation, float La
 			0.f,
 			12.f
 		);
-
+		*/
 		FVector LaunchVelocity(0);
 		//FVector TossVelocity = BarrelPosition * LaunchSpeed;
 		FCollisionResponseParams  ResponseParam;
@@ -83,7 +83,7 @@ void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation, float La
 				ESuggestProjVelocityTraceOption::DoNotTrace,
 				ResponseParam,
 				ActorsToIgnore,
-				true)
+				false)
 			)
 		{
 			FVector AimDirection = LaunchVelocity.GetSafeNormal();
@@ -103,7 +103,7 @@ void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation, float La
 			Turrent->RotateTurrent(DeltaRotator.Yaw);
 		}
 		else {
-			UE_LOG(LogTemp, Warning, TEXT("Could not find solution"));
+			//UE_LOG(LogTemp, Warning, TEXT("Could not find solution to fire"));
 		}
 
 		

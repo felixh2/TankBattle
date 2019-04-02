@@ -27,15 +27,24 @@ public:
 	void IntendMoveForward(float Throw);
 
 	UFUNCTION(BlueprintCallable, Category = Input)
+	void IntendMoveBackward(float Throw);
+
+	UFUNCTION(BlueprintCallable, Category = Input)
 	void IntendTurnRight(float Throw);
 
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void IntendTurnLeft(float Throw);
 
+
+	
+
 protected:
 
 
 private:
+	// Called from the pathfinding logic by the AI controller
+	void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
 	UTankTrack* RightTankTrack = nullptr;
 	UTankTrack* LeftTankTrack = nullptr;
 };
