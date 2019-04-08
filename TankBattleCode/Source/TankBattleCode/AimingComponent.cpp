@@ -15,10 +15,16 @@ UAimingComponent::UAimingComponent()
 	// ...
 }
 
+
+void UAimingComponent::Initialize(UTankBarrel * BarrelRef, UTankTurrent * TurrentRef)
+{
+	SetBarrelReference(BarrelRef);
+	SetTurrentReference(TurrentRef);
+}
+
 void UAimingComponent::SetBarrelReference(UTankBarrel* BarrelRef)
 {
 	Barrel = BarrelRef;
-	
 }
 
 void UAimingComponent::SetTurrentReference(UTankTurrent * TurrentRef)
@@ -49,6 +55,7 @@ void UAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation, float LaunchSpeed)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("%s is Aiming to Location : %s"), *WhoIsAiming, *HitLocation.ToString());
+	if (!Barrel) { return; }
 	if (Barrel) {
 
 		FVector BarrelPosition = Barrel->GetComponentTransform().GetLocation();

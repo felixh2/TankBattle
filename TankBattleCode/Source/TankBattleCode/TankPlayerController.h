@@ -19,7 +19,7 @@ class TANKBATTLECODE_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-		ATank* GetControlledTank() const;
+		
 		virtual void BeginPlay() override;
 		virtual void Tick(float DeltaTime) override;
 		void AimTowardsCrosshair();
@@ -38,4 +38,8 @@ class TANKBATTLECODE_API ATankPlayerController : public APlayerController
 		float LineTraceRange = 10000000.0f;
 
 		FHitResult  HitLocation;
+protected:
+
+	UFUNCTION(BlueprintCallable, Category = "setup")
+	ATank * GetControlledTank() const;
 };
