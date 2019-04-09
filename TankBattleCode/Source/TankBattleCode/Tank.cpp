@@ -4,7 +4,7 @@
 #include "TankBarrel.h"
 #include "AimingComponent.h"
 #include "Projectile.h"
-#include "TankMovementComponent.h"
+
 
 
 
@@ -31,7 +31,7 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("Donkey3"));
+	AimingComponent = FindComponentByClass<UAimingComponent>();
 }
 
 //// After Refactoring
@@ -61,7 +61,7 @@ void ATank::SetTurrentReference(UTankTurrent * TurretReference)
 
 void ATank::AimAt(FString WhoIsAiming, FVector &HitLocation)
 {
-	if (!AimingComponent) { return; }
+	if (!ensure(AimingComponent)) { return; }
 	
 	AimingComponent->AimAt(WhoIsAiming, HitLocation, LaunchSpeed);
 
@@ -72,7 +72,7 @@ void ATank::Fire()
 {
 
 	bool ReadyToFire = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-	if (!Barrel) { return; }
+	if (ensure(!Barrel)) { return; }
 	if (ReadyToFire) {
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,

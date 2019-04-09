@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "AimingComponent.h"
+
+
 
 ATank * ATankPlayerController::GetControlledTank() const
 {
@@ -12,11 +15,19 @@ void ATankPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	ATank* Tank = GetControlledTank();
-	if (Tank) {
+	if (ensure(Tank)) {
 		UE_LOG(LogTemp, Warning, TEXT("player controller possesed tank %s"),*(Tank->GetName()));
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("player controller couldn't possess tank"));
+	}
+	auto AimingComponent = GetControlledTank()->FindComponentByClass<UAimingComponent>();
+	if (!AimingComponent) {
+		UE_LOG(LogTemp, Warning, TEXT("Could not find aiming component"));
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("Found aiming component"));
+		FindAimingComponent(AimingComponent);
 	}
 }
 

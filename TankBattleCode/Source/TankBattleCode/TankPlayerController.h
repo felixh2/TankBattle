@@ -11,6 +11,8 @@
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
+
+class UAimingComponent;
 /**
  * 
  */
@@ -19,7 +21,7 @@ class TANKBATTLECODE_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-		
+public:		
 		virtual void BeginPlay() override;
 		virtual void Tick(float DeltaTime) override;
 		void AimTowardsCrosshair();
@@ -42,4 +44,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "setup")
 	ATank * GetControlledTank() const;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FindAimingComponent(UAimingComponent* AimingComponent);
+
 };

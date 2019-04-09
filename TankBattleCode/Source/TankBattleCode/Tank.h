@@ -12,7 +12,7 @@ class UTankTurrent;
 class UTankBarrel;
 class UAimingComponent;
 class AProjectile;
-class UTankMovementComponent;
+
 
 UCLASS()
 class TANKBATTLECODE_API ATank : public APawn
@@ -54,8 +54,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	UAimingComponent* AimingComponent = nullptr;
 
-	UPROPERTY(BlueprintReadOnly)                                     // Enables to expose this variable in Blueprint 
-	UTankMovementComponent* MovementComponent = nullptr;
+//	UPROPERTY(BlueprintReadOnly)                                     // Enables to expose this variable in Blueprint 
+//	UTankMovementComponent* MovementComponent = nullptr;
 
 
 private:
