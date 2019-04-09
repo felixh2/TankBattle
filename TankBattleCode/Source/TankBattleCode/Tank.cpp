@@ -2,7 +2,7 @@
 
 #include "Tank.h"
 #include "TankBarrel.h"
-#include "AimingComponent.h"
+//#include "AimingComponent.h"
 #include "Projectile.h"
 
 
@@ -31,7 +31,7 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	AimingComponent = FindComponentByClass<UAimingComponent>();
+//	AimingComponent = FindComponentByClass<UAimingComponent>();
 }
 
 //// After Refactoring
@@ -58,7 +58,7 @@ void ATank::SetTurrentReference(UTankTurrent * TurretReference)
 */
 
 
-
+/*
 void ATank::AimAt(FString WhoIsAiming, FVector &HitLocation)
 {
 	if (!ensure(AimingComponent)) { return; }
@@ -66,7 +66,7 @@ void ATank::AimAt(FString WhoIsAiming, FVector &HitLocation)
 	AimingComponent->AimAt(WhoIsAiming, HitLocation, LaunchSpeed);
 
 }
-
+*/
 
 void ATank::Fire()
 {

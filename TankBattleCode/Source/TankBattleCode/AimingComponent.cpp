@@ -52,7 +52,7 @@ void UAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
-void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation, float LaunchSpeed)
+void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("%s is Aiming to Location : %s"), *WhoIsAiming, *HitLocation.ToString());
 	if (!Barrel) { return; }

@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "Tank.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "DrawDebugHelpers.h"
 
@@ -39,13 +38,16 @@ public:
 		UPROPERTY(EditAnywhere)
 		float LineTraceRange = 10000000.0f;
 
+
 		FHitResult  HitLocation;
 protected:
 
-	UFUNCTION(BlueprintCallable, Category = "setup")
-	ATank * GetControlledTank() const;
+//	UFUNCTION(BlueprintCallable, Category = "setup")
+//	ATank * GetControlledTank() const;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FindAimingComponent(UAimingComponent* AimingComponent);
 
+private:
+	UAimingComponent * AimingComponent = nullptr;
 };

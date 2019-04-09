@@ -10,7 +10,7 @@
 
 class UTankTurrent;
 class UTankBarrel;
-class UAimingComponent;
+//class UAimingComponent;
 class AProjectile;
 
 
@@ -23,7 +23,7 @@ public:
 
 	ATank();
 
-	void AimAt(FString WhoIsAiming, FVector &HitLocation);
+	//void AimAt(FString WhoIsAiming, FVector &HitLocation);
 /*
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelRef);
@@ -51,8 +51,8 @@ protected:
 //	UFUNCTION(BlueprintCallable, Category = "Setup")
 //	void Initialize(UTankTurrent* TurretReference, UTankBarrel* BarrelRef);
 
-	UPROPERTY(BlueprintReadOnly)
-	UAimingComponent* AimingComponent = nullptr;
+//	UPROPERTY(BlueprintReadOnly)
+//	UAimingComponent* AimingComponent = nullptr;
 
 //	UPROPERTY(BlueprintReadOnly)                                     // Enables to expose this variable in Blueprint 
 //	UTankMovementComponent* MovementComponent = nullptr;

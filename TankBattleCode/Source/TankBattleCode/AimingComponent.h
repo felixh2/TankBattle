@@ -32,11 +32,14 @@ public:
 	// Sets default values for this component's properties
 	UAimingComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void AimAt(FString WhoIsAiming, FVector &HitLocation, float LaunchSpeed);
+	void AimAt(FString WhoIsAiming, FVector &HitLocation);
 
 	
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel* BarrelRef, UTankTurrent* TurrentRef);
+
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float LaunchSpeed = 10000.f;
 
 protected:
 	// Called when the game starts

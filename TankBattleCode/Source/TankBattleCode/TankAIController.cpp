@@ -2,12 +2,16 @@
 
 #include "TankAIController.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "AimingComponent.h"
+
 
 #pragma optimize("", off)
+
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	ATank* TankAI = GetControlledTank();
+	
+	/*ATank* TankAI = GetControlledTank();
 
 	if (TankAI) {
 		UE_LOG(LogTemp, Warning, TEXT("AI Tank possessed tank %s"), *(TankAI->GetName()) );
@@ -15,35 +19,36 @@ void ATankAIController::BeginPlay()
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("AI Tank NOT possessed"));
 	}
+	*/
 
-
-	//PlayerTank = GetPlayerTank();
-	if (PlayerTank) {
-		
-		FVector TankPosition = PlayerTank->GetTransform().GetLocation();
-		UE_LOG(LogTemp, Warning, TEXT("AI Tank got player controller tank at position: %s"), *TankPosition.ToString());
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("AI Tank didn't get player controller tank"));
-	}
+	PlayerTank = GetPawn();
+	if (!ensure(PlayerTank)) {return;}		
+	FVector TankPosition = PlayerTank->GetTransform().GetLocation();
+	UE_LOG(LogTemp, Warning, TEXT("AI Tank got player controller tank at position: %s"), *TankPosition.ToString());
+	
+	
 	//FVector TankPosition = PlayerTank->GetTransform().GetLocation();
+
+	AimingComponent = GetPawn()->FindComponentByClass<UAimingComponent>();
+	if (!ensure(AimingComponent)) { return; }
 }
 
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	FVector playerTankLocation = AimTowardsPlayerTank();
-	GetControlledTank()->AimAt(GetControlledTank()->GetName(), playerTankLocation);
-	GetControlledTank()->Fire();
+	AimingComponent->AimAt(GetPawn()->GetName(), playerTankLocation);
+	
+	//GetPawn()->Fire();
 
-	MoveToActor(GetPlayerTank(), AcceptenceRadius);
+	MoveToActor(GetWorld()->GetFirstPlayerController()->GetPawn(), AcceptenceRadius);
 
 }
 
 FVector ATankAIController::AimTowardsPlayerTank()
 {
 
-	ATank* PlayerTank = GetPlayerTank();
+	APawn* PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	FVector playerTankLocation = PlayerTank->GetActorLocation();
 	FVector Start = GetPawn()->GetTransform().GetLocation();
 
@@ -62,6 +67,10 @@ FVector ATankAIController::AimTowardsPlayerTank()
 	return playerTankLocation;
 }
 
+
+
+//////// Refactored///////////
+/*
 ATank * ATankAIController::GetPlayerTank() const
 {
 	ATank* Player_Tank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
@@ -73,7 +82,7 @@ ATank * ATankAIController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());
 }
-
+*/
 
 #pragma optimize("", on)
 

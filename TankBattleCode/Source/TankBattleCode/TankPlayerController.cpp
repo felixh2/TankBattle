@@ -4,31 +4,28 @@
 #include "AimingComponent.h"
 
 
-
+/*
 ATank * ATankPlayerController::GetControlledTank() const
 {
-	return Cast<ATank>(GetPawn());
+	return GetPawn();
 }
+*/
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ATank* Tank = GetControlledTank();
+	/*ATank* Tank = GetPawn();
 	if (ensure(Tank)) {
 		UE_LOG(LogTemp, Warning, TEXT("player controller possesed tank %s"),*(Tank->GetName()));
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("player controller couldn't possess tank"));
-	}
-	auto AimingComponent = GetControlledTank()->FindComponentByClass<UAimingComponent>();
-	if (!AimingComponent) {
-		UE_LOG(LogTemp, Warning, TEXT("Could not find aiming component"));
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("Found aiming component"));
-		FindAimingComponent(AimingComponent);
-	}
+	}*/
+	
+	AimingComponent = GetPawn()->FindComponentByClass<UAimingComponent>();
+	if (!ensure(AimingComponent)) {return;	}
+	FindAimingComponent(AimingComponent);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -42,7 +39,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 {	
 	FVector UnitVectorHitLocation  = DeprojectCrossHairToWorld();
 	CalculateHitLocation(UnitVectorHitLocation);
-	GetControlledTank()->AimAt(GetControlledTank()->GetName(), HitLocation.Location);	// Physical aiming 
+	AimingComponent->AimAt(GetPawn()->GetName(), HitLocation.Location);	// Physical aiming 
 }
 
 FVector ATankPlayerController::DeprojectCrossHairToWorld()
