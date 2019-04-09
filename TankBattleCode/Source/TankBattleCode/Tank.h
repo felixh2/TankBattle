@@ -8,10 +8,9 @@
 
 
 
-class UTankTurrent;
-class UTankBarrel;
-//class UAimingComponent;
-class AProjectile;
+//class UTankTurrent;
+//class UTankBarrel;
+
 
 
 UCLASS()
@@ -30,18 +29,15 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetTurrentReference(UTankTurrent* TurretReference);
-*/
+
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float LaunchSpeed = 10000.f;
+*/
 
-	UFUNCTION(BlueprintCallable, Category = Setup)
-	void Fire();
 
-	UPROPERTY(EditAnywhere, Category = Firing)
-	TSubclassOf<AProjectile> ProjectileBlueprint;
 
-	UPROPERTY(EditDefaultsOnly, Category = Firing) // EditDefaultsOnly - all tanks will have the same values, can be changed only in blueprint 
-	float ReloadTime = 2.f;
+
+
 
 protected:
 	
@@ -60,9 +56,8 @@ protected:
 
 private:
 
-	UTankBarrel* Barrel = nullptr;
-	UTankTurrent* Turrent = nullptr;
-	double LastFireTime = 0;
-	
+	//UTankBarrel* Barrel = nullptr;
+	//UTankTurrent* Turrent = nullptr;
+
 	
 };

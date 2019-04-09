@@ -22,6 +22,8 @@ enum class EFiringState : uint8
 
 class UTankBarrel;
 class UTankTurrent;
+class AProjectile;
+
 
 UCLASS( ClassGroup=(AimingComponent), meta=(BlueprintSpawnableComponent) )
 class TANKBATTLECODE_API UAimingComponent : public UActorComponent
@@ -34,12 +36,20 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void AimAt(FString WhoIsAiming, FVector &HitLocation);
 
-	
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void Fire();
+
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel* BarrelRef, UTankTurrent* TurrentRef);
 
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float LaunchSpeed = 10000.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing) // EditDefaultsOnly - all tanks will have the same values, can be changed only in blueprint 
+	float ReloadTime = 2.f;
+
+	UPROPERTY(EditAnywhere, Category = Firing)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 protected:
 	// Called when the game starts
@@ -54,7 +64,7 @@ private:
 	void SetTurrentReference(UTankTurrent* TurrentRef);
 	UTankBarrel * Barrel = nullptr;
 	UTankTurrent* Turrent = nullptr;
-
+	double LastFireTime = 0;
 
 		
 	
