@@ -15,6 +15,10 @@ class TANKBATTLECODE_API UTankTrack : public UStaticMeshComponent
 	GENERATED_BODY()
 
 public:
+	
+
+	virtual void BeginPlay() override;
+
 		// Setting the Throttle value between -1 and +1
 		UFUNCTION(BlueprintCallable)
 		void SetThrottle(float Throttle);
@@ -24,7 +28,15 @@ public:
 
 		UPROPERTY(EditDefaultsOnly)
 		float MaxforceOnTrack = 960000; //2.4*40000;  reasonable acceleration - 2.4  [m/s^2]
-private:
 
+		UTankTrack();
+		virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
+
+
+private:
+	UFUNCTION()		
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	
 
 };

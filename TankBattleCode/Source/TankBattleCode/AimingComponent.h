@@ -24,8 +24,8 @@ class UTankBarrel;
 class UTankTurrent;
 class AProjectile;
 
-
-UCLASS( ClassGroup=(AimingComponent), meta=(BlueprintSpawnableComponent) )
+//UCLASS(ClassGroup = (MovementComponent), meta = (BlueprintSpawnableComponent))
+UCLASS( ClassGroup=(TankAimingComponent), meta=(BlueprintSpawnableComponent) )
 class TANKBATTLECODE_API UAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -33,7 +33,6 @@ class TANKBATTLECODE_API UAimingComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UAimingComponent();
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void AimAt(FString WhoIsAiming, FVector &HitLocation);
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
@@ -52,20 +51,23 @@ public:
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 protected:
-	// Called when the game starts
+
 	virtual void BeginPlay() override;
-	
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 	UPROPERTY(BlueprintReadOnly, Category = "Status")
-	EFiringState EFiringState = EFiringState::Locked;
+	EFiringState EFiringState = EFiringState::Reloading;
 
 private:	
 	
+	
+	bool IsBarrelMoving();
 	void SetBarrelReference(UTankBarrel* BarrelRef);
 	void SetTurrentReference(UTankTurrent* TurrentRef);
+
 	UTankBarrel * Barrel = nullptr;
 	UTankTurrent* Turrent = nullptr;
 	double LastFireTime = 0;
 
-		
-	
+	bool IsReloading = true;
+	FVector AimDirection;
 };
