@@ -37,20 +37,26 @@ void UAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	IsReloading = (Time1- LastFireTime) < ReloadTime;
 
 	//UE_LOG(LogTemp, Warning, TEXT("Time1 : %f, Time2 : %f"), Time1, Time2);
-
-	if (IsReloading) {
-		FiringState = EFiringState::Reloading;
-		//UE_LOG(LogTemp, Warning, TEXT("Reloading"));
+	if (FiringState == EFiringState::OutOfAmmo) 
+	{
+		FiringState = EFiringState::OutOfAmmo;
 	}
-	else{ 
-		if (IsBarrelMoving()) {
-			FiringState = EFiringState::Aiming;
-		//	UE_LOG(LogTemp, Warning, TEXT("Barrel Moving"));
+	else {
+		if (IsReloading) {
+			FiringState = EFiringState::Reloading;
+			//UE_LOG(LogTemp, Warning, TEXT("Reloading"));
 		}
 		else {
-			FiringState = EFiringState::Locked;
-		//	UE_LOG(LogTemp, Warning, TEXT("Barrel Stopped"));
+			if (IsBarrelMoving()) {
+				FiringState = EFiringState::Aiming;
+				//	UE_LOG(LogTemp, Warning, TEXT("Barrel Moving"));
+			}
+			else {
+				FiringState = EFiringState::Locked;
+				//	UE_LOG(LogTemp, Warning, TEXT("Barrel Stopped"));
+			}
 		}
+
 	}
 }
 
@@ -158,7 +164,7 @@ void UAimingComponent::Fire()
 	
 	if (!ensure(Barrel)) { return; }
 	if (!ensure(ProjectileBlueprint)) { return; }
-	if (FiringState != EFiringState::Reloading) {
+	if ((FiringState != EFiringState::Reloading) & (FiringState != EFiringState::OutOfAmmo)) {
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
@@ -166,6 +172,9 @@ void UAimingComponent::Fire()
 			);
 	
 		Projectile->LaunchProjectile(LaunchSpeed);
+		AmmoLeft = AmmoLeft - 1;
+		if (AmmoLeft == 0)
+			FiringState = EFiringState::OutOfAmmo;
 		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
 
