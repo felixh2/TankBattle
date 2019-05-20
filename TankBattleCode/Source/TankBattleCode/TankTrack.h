@@ -27,16 +27,21 @@ public:
 		float Acceleration = 2.4; 
 
 		UPROPERTY(EditDefaultsOnly)
-		float MaxforceOnTrack = 960000; //2.4*40000;  reasonable acceleration - 2.4  [m/s^2]
+		float MaxforceOnTrack = 1000000; //2.4*40000;  reasonable acceleration - 2.4  [m/s^2]
 
 		UTankTrack();
 		virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
-
+		
 
 private:
 	UFUNCTION()		
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	
+	void ApplySidewaysForce();
+	void DriveTrack(float Throttle);
+
+
+	float CurrentThrottle = 0.f;
 
 };

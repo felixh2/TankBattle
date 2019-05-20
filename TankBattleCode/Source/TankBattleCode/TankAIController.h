@@ -32,6 +32,8 @@ class TANKBATTLECODE_API ATankAIController : public AAIController
 
 private:
 	APawn* PlayerTank = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = Firing)
 	float AcceptenceRadius = 3000;
 
 	UAimingComponent * AimingComponent = nullptr;

@@ -16,6 +16,12 @@ UAimingComponent::UAimingComponent()
 
 }
 
+
+EFiringState UAimingComponent::GetFiringState()
+{
+	return FiringState;
+}
+
 void UAimingComponent::Initialize(UTankBarrel * BarrelRef, UTankTurrent * TurrentRef)
 {
 	SetBarrelReference(BarrelRef);
@@ -33,16 +39,16 @@ void UAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	//UE_LOG(LogTemp, Warning, TEXT("Time1 : %f, Time2 : %f"), Time1, Time2);
 
 	if (IsReloading) {
-		EFiringState = EFiringState::Reloading;
+		FiringState = EFiringState::Reloading;
 		//UE_LOG(LogTemp, Warning, TEXT("Reloading"));
 	}
 	else{ 
 		if (IsBarrelMoving()) {
-			EFiringState = EFiringState::Aiming;
+			FiringState = EFiringState::Aiming;
 		//	UE_LOG(LogTemp, Warning, TEXT("Barrel Moving"));
 		}
 		else {
-			EFiringState = EFiringState::Locked;
+			FiringState = EFiringState::Locked;
 		//	UE_LOG(LogTemp, Warning, TEXT("Barrel Stopped"));
 		}
 	}
@@ -152,7 +158,7 @@ void UAimingComponent::Fire()
 	
 	if (!ensure(Barrel)) { return; }
 	if (!ensure(ProjectileBlueprint)) { return; }
-	if (EFiringState != EFiringState::Reloading) {
+	if (FiringState != EFiringState::Reloading) {
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
