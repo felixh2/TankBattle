@@ -172,8 +172,8 @@ void UAimingComponent::Fire()
 			);
 	
 		Projectile->LaunchProjectile(LaunchSpeed);
-		AmmoLeft = AmmoLeft - 1;
-		if (AmmoLeft == 0)
+		Ammo = Ammo - 1;
+		if (Ammo == 0)
 			FiringState = EFiringState::OutOfAmmo;
 		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
