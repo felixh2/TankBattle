@@ -4,6 +4,7 @@
 #include "TankProjectileMovementComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Runtime/Engine/Public/TimerManager.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -29,6 +30,7 @@ AProjectile::AProjectile()
 
 	TankProjectileMovementComponent = CreateDefaultSubobject<UTankProjectileMovementComponent>(FName("Tank Projectile Movement Component"));
 	TankProjectileMovementComponent->bAutoActivate = false;
+
 }
 
 // Called when the game starts or when spawned
@@ -44,10 +46,32 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	RadialForce->FireImpulse();
+
+	SetRootComponent(ImpactBlast);
+	CollisionMesh->DestroyComponent();                   // Doesn't  destroys the actor
+	
+	
+	/* SetTimer(FTimerHandle& InOutHandle,
+		UserClass* InObj,
+		typename FTimerDelegate::TUObjectMethodDelegate< UserClass >::FMethodPtr InTimerMethod,
+		float InRate,
+		bool InbLoop = false,
+		float InFirstDelay = -1.f)
+	*/
+	FTimerHandle OutTimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(OutTimerHandle, this, &AProjectile::OnTimerOverlap, 5.f, false);
+	
+}
+
+void AProjectile::OnTimerOverlap()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Timer Over"));
+	Destroy();
 }
 
 void AProjectile::LaunchProjectile(float Speed)
 {
+	//TimerManager = GetWorld()->GetTimerManager();
 	float Time = GetWorld()->GetTimeSeconds();
 	//UE_LOG(LogTemp, Warning, TEXT("%f Fire with speed %f"), Time, Speed);
 
