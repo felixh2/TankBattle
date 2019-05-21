@@ -24,6 +24,9 @@ AProjectile::AProjectile()
 	ImpactBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	ImpactBlast->bAutoActivate = false;
 
+	RadialForce = CreateDefaultSubobject<URadialForceComponent>(FName("Radial Force"));
+	RadialForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
 	TankProjectileMovementComponent = CreateDefaultSubobject<UTankProjectileMovementComponent>(FName("Tank Projectile Movement Component"));
 	TankProjectileMovementComponent->bAutoActivate = false;
 }
@@ -40,6 +43,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	UE_LOG(LogTemp, Warning, TEXT("BOOM!!"));
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
+	RadialForce->FireImpulse();
 }
 
 void AProjectile::LaunchProjectile(float Speed)

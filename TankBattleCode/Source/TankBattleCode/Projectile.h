@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Components/StaticMeshComponent.h"    // for OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
-
+#include "PhysicsEngine/RadialForceComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
@@ -46,6 +46,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UParticleSystemComponent* ImpactBlast = nullptr;
 	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	URadialForceComponent *RadialForce = nullptr;
+
 	UTankProjectileMovementComponent * TankProjectileMovementComponent = nullptr;
 	
 };
