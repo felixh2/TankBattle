@@ -88,7 +88,7 @@ void ATankPlayerController::CalculateHitLocation(FVector &UnitVectorHitLocation)
 		
 	AActor* ActorHit = HitLocation.GetActor();
 	if (ActorHit) {
-		UE_LOG(LogTemp, Warning, TEXT("Target is :%s "), *(ActorHit->GetName()));
+		//UE_LOG(LogTemp, Warning, TEXT("Target is :%s "), *(ActorHit->GetName()));
 		//UE_LOG(LogTemp, Warning, TEXT("Location is :%s "), *HitLocation.Location.ToString());
 	}
 }
