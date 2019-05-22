@@ -39,8 +39,8 @@ void UTankTrack::DriveTrack(float Throttle)
 	auto ForceToApply = GetForwardVector() * Throttle * MaxforceOnTrack;
 	auto ForceLocation = GetComponentLocation();
 	//UE_LOG(LogTemp, Warning, TEXT("%s with force %f"), *Name, MaxforceOnTrack);
-	auto RootTank = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
-	RootTank->AddForceAtLocation(ForceToApply, ForceLocation);
+	auto Root = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
+	Root->AddForceAtLocation(ForceToApply, ForceLocation);
 }
 
 void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)

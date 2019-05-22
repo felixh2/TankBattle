@@ -159,25 +159,31 @@ void UAimingComponent::AimAt(FString WhoIsAiming, FVector &HitLocation)
 	}
 }
 
+void UAimingComponent::SetAmmo(int NewAmmo) 
+{
+	Ammo = NewAmmo;
+}
+
 void UAimingComponent::Fire()
 {
-	
-	if (!ensure(Barrel)) { return; }
-	if (!ensure(ProjectileBlueprint)) { return; }
-	if ((FiringState != EFiringState::Reloading) & (FiringState != EFiringState::OutOfAmmo)) {
-		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
-			ProjectileBlueprint,
-			Barrel->GetSocketLocation(FName("Projectile")),
-			Barrel->GetSocketRotation(FName("Projectile"))
-			);
-	
-		Projectile->LaunchProjectile(LaunchSpeed);
-		Ammo = Ammo - 1;
-		if (Ammo == 0)
-			FiringState = EFiringState::OutOfAmmo;
-		LastFireTime = GetWorld()->GetTimeSeconds();
-	}
+	if (Ammo) {
+		if (!ensure(Barrel)) { return; }
+		if (!ensure(ProjectileBlueprint)) { return; }
+		if ((FiringState != EFiringState::Reloading) & (FiringState != EFiringState::OutOfAmmo)) {
+			auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+				ProjectileBlueprint,
+				Barrel->GetSocketLocation(FName("Projectile")),
+				Barrel->GetSocketRotation(FName("Projectile"))
+				);
 
+
+			Projectile->LaunchProjectile(LaunchSpeed);
+			Ammo = Ammo - 1;
+			if (Ammo == 0)
+				FiringState = EFiringState::OutOfAmmo;
+			LastFireTime = GetWorld()->GetTimeSeconds();
+		}
+	}
 	
 }
 

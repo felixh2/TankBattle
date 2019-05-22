@@ -51,6 +51,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile Blueprint")
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
+	void SetAmmo(int NewAmmo);
+
+
 	EFiringState GetFiringState();
 	
 
@@ -63,7 +66,7 @@ protected:
 	EFiringState FiringState = EFiringState::Reloading;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Firing")
-	int Ammo = 20;
+	int Ammo = 10;
 
 private:	
 	

@@ -22,6 +22,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void LaunchProjectile(float Speed);
 
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float ProjectileDamage = 20.f;
 
 
 protected:

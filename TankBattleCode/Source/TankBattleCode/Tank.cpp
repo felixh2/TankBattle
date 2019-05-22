@@ -3,7 +3,8 @@
 #include "Tank.h"
 
 //#include "TankBarrel.h"
-//#include "AimingComponent.h"
+#include "AimingComponent.h"
+#include "Widget.h"
 //#include "Projectile.h"
 
 
@@ -14,13 +15,22 @@
 // Sets default values
 ATank::ATank()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Donkey4"));
+	
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	// Creating Aiming Component in BluePrints
-	
 
+
+	// Fucking important !
+	/*
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootSceneComponent"));					// without adding this, the tank explosion would be the root !!
+
+	TankExplosion = CreateDefaultSubobject<UParticleSystemComponent>(FName("Tank Explosion"));
+	TankExplosion->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	*/
+
+
+	// Creating Aiming Component in BluePrints
 	//AimingComponent = CreateDefaultSubobject<UAimingComponent>(FName("Aiming Component"));
 	//MovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 
@@ -28,11 +38,39 @@ ATank::ATank()
 }
 
 
+float ATank::GetTankHealth()
+{
+	return Health;
+}
+
+void ATank::SetTankHealth(float NewHealth)
+{
+	Health = NewHealth;
+}
+
+float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+
+	Health -= DamageAmount;
+	UE_LOG(LogTemp, Warning, TEXT("Health is: %f"), Health);
+	if (Health < 1.f) {
+		(FindComponentByClass<UParticleSystemComponent>())->Activate();
+		(FindComponentByClass<UAimingComponent>())->SetAmmo(0);
+		UE_LOG(LogTemp, Warning, TEXT("Tank died"));
+	}
+	return Health;
+}
+
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 //	AimingComponent = FindComponentByClass<UAimingComponent>();
+}
+
+void ATank::SetProgressBarWidget(UWidget *BarWidget)
+{
+	ProgressBarWidget = BarWidget;
 }
 
 //// After Refactoring

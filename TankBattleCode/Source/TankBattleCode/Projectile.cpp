@@ -5,6 +5,10 @@
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Runtime/Engine/Public/TimerManager.h"
+#include "Tank.h"
+#include "AimingComponent.h"
+#include "Runtime/Engine/Classes/GameFramework/DamageType.h"
+
 
 // Sets default values
 AProjectile::AProjectile()
@@ -43,6 +47,35 @@ void AProjectile::BeginPlay()
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	UE_LOG(LogTemp, Warning, TEXT("BOOM!!"));
+
+	// # 1 Option
+	/*if (Cast<ATank>(OtherActor))
+	{
+		float Health = ((ATank*)OtherActor)->GetTankHealth();
+		((ATank*)OtherActor)->SetTankHealth( Health - 20.f);
+
+		if (((ATank*)OtherActor)->GetTankHealth() < 1.f) {
+			//((ATank*)OtherActor)->SetActorScale3D(FVector(0.1f, 0.1f, 0.1f));
+			//((ATank*)OtherActor)->Destroy();
+
+			
+			UAimingComponent *AimingComp = ((ATank*)OtherActor)->FindComponentByClass<UAimingComponent>();
+			AimingComp->SetAmmo(0);
+			//((ATank*)OtherActor)->GetCompo//GetComponentByClass<UAimingComponent>()
+		}
+	}*/
+
+	// # 2 Option
+	UGameplayStatics::ApplyRadialDamage(
+		this,
+		ProjectileDamage,
+		GetActorLocation(),
+		RadialForce->Radius,
+		UDamageType::StaticClass(),
+		TArray<AActor*>()			// Damage all actors
+	);
+
+
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	RadialForce->FireImpulse();
@@ -51,13 +84,6 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	CollisionMesh->DestroyComponent();                   // Doesn't  destroys the actor
 	
 	
-	/* SetTimer(FTimerHandle& InOutHandle,
-		UserClass* InObj,
-		typename FTimerDelegate::TUObjectMethodDelegate< UserClass >::FMethodPtr InTimerMethod,
-		float InRate,
-		bool InbLoop = false,
-		float InFirstDelay = -1.f)
-	*/
 	FTimerHandle OutTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(OutTimerHandle, this, &AProjectile::OnTimerOverlap, 5.f, false);
 	
