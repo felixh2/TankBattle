@@ -48,11 +48,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing) // EditDefaultsOnly - all tanks will have the same values, can be changed only in blueprint 
 	float ReloadTime = 2.f;
 
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile Blueprint")
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	EFiringState GetFiringState();
 	
+
 protected:
 
 	virtual void BeginPlay() override;
