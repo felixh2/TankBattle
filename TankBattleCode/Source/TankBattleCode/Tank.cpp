@@ -56,6 +56,7 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 	if (Health < 1.f) {
 		(FindComponentByClass<UParticleSystemComponent>())->Activate();
 		(FindComponentByClass<UAimingComponent>())->SetAmmo(0);
+		OnTankDeath.Broadcast();
 		UE_LOG(LogTemp, Warning, TEXT("Tank died"));
 	}
 	return Health;
@@ -68,10 +69,6 @@ void ATank::BeginPlay()
 //	AimingComponent = FindComponentByClass<UAimingComponent>();
 }
 
-void ATank::SetProgressBarWidget(UWidget *BarWidget)
-{
-	ProgressBarWidget = BarWidget;
-}
 
 //// After Refactoring
 /*

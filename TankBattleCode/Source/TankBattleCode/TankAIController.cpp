@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAIController.h"
+#include "Tank.h"
+#include "Delegate.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "AimingComponent.h"
 
@@ -46,6 +48,17 @@ void ATankAIController::Tick(float DeltaTime)
 
 }
 
+void ATankAIController::SetPawn(APawn * InPawn)
+{
+	Super::SetPawn(InPawn);
+	if (InPawn) {
+		ATank *PossesedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossesedTank)) { return; }
+		PossesedTank->OnTankDeath.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
+		
+	}
+}
+
 FVector ATankAIController::AimTowardsPlayerTank()
 {
 
@@ -66,6 +79,12 @@ FVector ATankAIController::AimTowardsPlayerTank()
 	);*/
 
 	return playerTankLocation;
+}
+
+void ATankAIController::OnTankDeath()
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("Tank Death - delegate fired"));
 }
 
 

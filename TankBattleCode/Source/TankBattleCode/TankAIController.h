@@ -26,15 +26,22 @@ class TANKBATTLECODE_API ATankAIController : public AAIController
 
 //	ATank* GetPlayerTank() const;
 
+	virtual void SetPawn(APawn *InPawn) override; // Method that being called when pawn is being possesed
+
 	FVector AimTowardsPlayerTank();
 
 
 
 private:
-	APawn* PlayerTank = nullptr;
+	
+	UFUNCTION()
+	void OnTankDeath();
+
 
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float AcceptenceRadius = 3000;
+
+	APawn* PlayerTank = nullptr;
 
 	UAimingComponent * AimingComponent = nullptr;
 };

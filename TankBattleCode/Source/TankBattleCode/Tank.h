@@ -2,7 +2,7 @@
 
 #pragma once
 #include "Runtime/Engine/Classes/Particles/ParticleSystemComponent.h"
-
+#include "Delegates/Delegate.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
@@ -12,8 +12,9 @@
 
 //class UTankTurrent;
 //class UTankBarrel;
-class UWidget;
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTankDeath);
 
 UCLASS()
 class TANKBATTLECODE_API ATank : public APawn
@@ -35,14 +36,13 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Setup")
 	float GetTankHealth();
 
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetProgressBarWidget(UWidget *BarWidget);
 
 	void SetTankHealth(float NewHealth);
 
 	
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	FOnTankDeath OnTankDeath;
 
 protected:
 
@@ -53,7 +53,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere,  Category = "Tank Status")
 	float Health = 100.f;
 
-
+	
 
 
 	
@@ -73,7 +73,7 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UParticleSystemComponent* TankExplosion = nullptr;
 	
-	UWidget *ProgressBarWidget = nullptr;
+
 	//UTankBarrel* Barrel = nullptr;
 	//UTankTurrent* Turrent = nullptr;
 
