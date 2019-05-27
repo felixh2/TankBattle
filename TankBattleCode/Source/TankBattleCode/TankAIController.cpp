@@ -63,6 +63,7 @@ FVector ATankAIController::AimTowardsPlayerTank()
 {
 
 	APawn* PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+	if (!ensure(PlayerTank)) { return FVector(-1.f,0.f,1.f); }
 	FVector playerTankLocation = PlayerTank->GetActorLocation();
 	FVector Start = GetPawn()->GetTransform().GetLocation();
 
@@ -83,8 +84,10 @@ FVector ATankAIController::AimTowardsPlayerTank()
 
 void ATankAIController::OnTankDeath()
 {
-
+	
 	UE_LOG(LogTemp, Warning, TEXT("Tank Death - delegate fired"));
+	GetPawn()->DetachFromControllerPendingDestroy();
+	
 }
 
 

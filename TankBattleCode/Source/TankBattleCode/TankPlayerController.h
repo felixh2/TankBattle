@@ -28,6 +28,7 @@ public:
 		FVector DeprojectCrossHairToWorld() ;
 		void CalculateHitLocation(FVector &UnitVectorHitLocation);
 
+	//	virtual void SetPawn(APawn *InPawn) override; // Method that being called when pawn is being possesed
 
 		UPROPERTY(EditAnywhere)
 		float CrossHairXLocation = 0.5;
@@ -48,6 +49,12 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FindAimingComponent(UAimingComponent* AimingComponent);
 
+	bool TankDestroyed = false;
+
 private:
+
+	UFUNCTION()													 // without this the engine will crush
+	void OnTankDeath();
+
 	UAimingComponent * AimingComponent = nullptr;
 };

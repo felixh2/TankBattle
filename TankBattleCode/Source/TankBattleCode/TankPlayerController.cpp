@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "Tank.h"
+//#include "Delegate.h"
 #include "AimingComponent.h"
 
 
@@ -23,6 +25,10 @@ void ATankPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("player controller couldn't possess tank"));
 	}*/
 	
+	ATank* Tank = Cast<ATank>(GetPawn());
+	if (!ensure(Tank)) { return; }
+	Tank->OnTankDeath.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
+
 	AimingComponent = GetPawn()->FindComponentByClass<UAimingComponent>();
 	if (!ensure(AimingComponent)) {return;	}
 	FindAimingComponent(AimingComponent);
@@ -39,7 +45,8 @@ void ATankPlayerController::AimTowardsCrosshair()
 {	
 	FVector UnitVectorHitLocation  = DeprojectCrossHairToWorld();
 	CalculateHitLocation(UnitVectorHitLocation);
-	AimingComponent->AimAt(GetPawn()->GetName(), HitLocation.Location);	// Physical aiming 
+	if(!TankDestroyed)
+		AimingComponent->AimAt(GetPawn()->GetName(), HitLocation.Location);	// Physical aiming 
 }
 
 FVector ATankPlayerController::DeprojectCrossHairToWorld()
@@ -83,7 +90,7 @@ void ATankPlayerController::CalculateHitLocation(FVector &UnitVectorHitLocation)
 		HitLocation,
 		Start,
 		End,
-		ECollisionChannel::ECC_Visibility		
+		ECollisionChannel::ECC_Camera							// ECC_Camera is important
 	);
 		
 	AActor* ActorHit = HitLocation.GetActor();
@@ -91,4 +98,20 @@ void ATankPlayerController::CalculateHitLocation(FVector &UnitVectorHitLocation)
 		//UE_LOG(LogTemp, Warning, TEXT("Target is :%s "), *(ActorHit->GetName()));
 		//UE_LOG(LogTemp, Warning, TEXT("Location is :%s "), *HitLocation.Location.ToString());
 	}
+}
+/*
+void ATankPlayerController::SetPawn(APawn *InPawn)
+{
+	
+	ATank* Tank = Cast<ATank>(InPawn);
+	if (!ensure(Tank)) { return; }
+	Tank->OnTankDeath.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
+	
+}
+*/
+void ATankPlayerController::OnTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Player Tank Died - delegate fired"));
+	TankDestroyed = true;
+	StartSpectatingOnly();
 }
